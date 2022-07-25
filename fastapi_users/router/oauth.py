@@ -1,7 +1,7 @@
 from typing import Dict, List, Tuple, Type
 
 import jwt
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from httpx_oauth.integrations.fastapi import OAuth2AuthorizeCallback
 from httpx_oauth.oauth2 import BaseOAuth2, OAuth2Token
 from pydantic import BaseModel
@@ -99,7 +99,6 @@ def get_oauth_router(
     )
     async def callback(
         request: Request,
-        response: Response,
         access_token_state: Tuple[OAuth2Token, str] = Depends(
             oauth2_authorize_callback
         ),
@@ -140,7 +139,7 @@ def get_oauth_router(
             )
 
         # Authenticate
-        return await backend.login(strategy, user, response)
+        return await backend.login(strategy, user)
 
     return router
 
